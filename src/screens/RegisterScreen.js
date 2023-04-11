@@ -4,41 +4,74 @@ import {
     StyleSheet,
     Image,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    ToastAndroid,
 } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Logo from '../assets/movie.png'
 import { useNavigation } from '@react-navigation/native'
+import axios from 'axios'
 
 const RegisterScreen = () => {
     const navigation = useNavigation();
+    const [nip, setNip] = useState('');
+    const [nama, setNama] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const handleRegister = async (value) => {
+        console.log('value', value);
+        try {
+            const response = await
+                axios.post('http://10.10.10.9:3200/users', {
+                    nip: value.nip,
+                    nama: value.nama,
+                    password: value.password
+                })
+            if (response.data.status == 200) {
+                console.log('response', response.data)
+            }
+        } catch (error) {
+            console.log(error.message)
+            ToastAndroid.show(error.message, ToastAndroid.SHORT)
+        }
+    }
+
     return (
         <View style={styles.container}>
             <Image source={Logo} style={styles.logo} />
             <View>
                 <TextInput
                     style={styles.input}
-                    placeholder="Name"
+                    placeholder="Nip"
                     placeholderTextColor="white"
+                    onChangeText={(nip) => setNip(nip)}
+                    value={nip}
                 />
                 <TextInput
                     style={styles.input}
-                    placeholder="Username"
+                    placeholder="Nama"
                     placeholderTextColor="white"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Email"
-                    placeholderTextColor="white"
+                    onChangeText={(nama) => setNama(nama)}
+                    value={nama}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Password"
                     placeholderTextColor="white"
+                    onChangeText={(password) => setPassword(password)}
+                    value={password}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Confirm Password"
+                    placeholderTextColor="white"
+                    onChangeText={(confirmPassword) => setConfirmPassword(confirmPassword)}
+                    value={confirmPassword}
                 />
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate('LoginScreen')}
+                    onPress={() => handleRegister({ nip, nama, password })}
                 >
                     <Text style={styles.textButton}>Register</Text>
                 </TouchableOpacity>

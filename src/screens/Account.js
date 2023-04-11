@@ -29,7 +29,7 @@ const Account = () => {
         try {
             let nip = await AsyncStorage.getItem('nip')
             let password = await AsyncStorage.getItem('password')
-            let name = await AsyncStorage.getItem('name')
+            let name = await AsyncStorage.getItem('nama')
             if (nip !== null) {
                 // value previously stored
                 setData({

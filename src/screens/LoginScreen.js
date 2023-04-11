@@ -22,7 +22,7 @@ const LoginScreen = () => {
         console.log('value', value);
         try {
             const response = await
-                axios.post('http://192.168.8.41:3200/users/login', {
+                axios.post('http://10.10.10.9:3200/users/login', {
                     nip: value.nip,
                     password: value.password
                 })
@@ -31,9 +31,9 @@ const LoginScreen = () => {
                 navigation.navigate('Homepage')
                 ToastAndroid.show(response.data.metadata, ToastAndroid.SHORT)
                 // AsyncStorage.setItem
-                // await AsyncStorage.setItem('password', value.password)
-                // await AsyncStorage.setItem('nip', value.nip)
-                // await AsyncStorage.setItem('name', response.data.data.nama)
+                await AsyncStorage.setItem('password', value.password)
+                await AsyncStorage.setItem('nip', value.nip)
+                await AsyncStorage.setItem('nama', response.data.data.nama)
             }
         } catch (error) {
             console.log(error.message)
